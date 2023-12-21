@@ -1,0 +1,50 @@
+<div id="divContainer">
+  <form [formGroup]="searchMovieForm" (ngsubmit)="sendSearchMovieForm()">
+    <h2>Search Movie</h2>
+    <div formGroupName="partieObligatoire">
+      <fieldset>
+        <label for="identifiant"> Identifiant : </label>
+        <input type="text" formControlName="identifiant" #identifiant />
+      </fieldset>
+      <fieldset>
+        <label for="titre"> Titre : </label>
+        <input type="text" formControlName="titre" #titre />
+      </fieldset>
+    </div>
+    <div
+      *ngIf="
+        soumission &&
+        searchMovieForm.get('partieObligatoire')?.errors?.['isRequired']
+      "
+    >
+      L'un des deux champs 'Identifiant' ou 'Titre' doit être renseigné
+    </div>
+    <fieldset>
+      <label for="type"> Type : </label>
+      <select name="type" formControlName="type">
+        <option value="film">film</option>
+        <option value="serie">serie</option>
+        <option value="episode">episode</option>
+      </select>
+    </fieldset>
+    <fieldset>
+      <label for="anneeSortie"> Année de sortie : </label>
+      <input type="number" formControlName="anneeSortie" #anneeSortie />
+    </fieldset>
+    <div
+      *ngIf="soumission && searchMovieForm.get('anneeSortie')?.hasError('min')"
+    >
+      L'année doit être comprise entre
+      {{ searchMovieForm.get("anneeSortie")?.getError("min").min }} et
+      {{ searchMovieForm.get("anneeSortie")?.getError("min").max }}.
+    </div>
+    <fieldset>
+      <label for="Fiche"> Fiche : </label>
+      <select name="fiche" formControlName="fiche">
+        <option value="complete">complete</option>
+        <option value="courte">courte</option>
+      </select>
+    </fieldset>
+    <button type="submit" (click)="onShow()">Recherche</button>
+  </form>
+</div>
