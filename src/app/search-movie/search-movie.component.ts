@@ -31,7 +31,7 @@ export class SearchMovieComponent implements OnInit {
       }),
       type: 'serie',
       anneeSortie: [
-        null,
+        '',
         [Validators.required, rangeDateValidator(1900, this.anneeEnCours)],
       ],
       fiche: '',
