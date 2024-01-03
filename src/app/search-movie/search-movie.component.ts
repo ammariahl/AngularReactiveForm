@@ -64,7 +64,7 @@ export function isRequiredValidator(
   return (control: AbstractControl): ValidationErrors | null => {
     const valueTitre = control.get(control1);
     const valueIdentifiant = control.get(control2);
-    if (!valueTitre?.value && !valueIdentifiant?.value) {
+    if (!valueTitre?.value || !valueIdentifiant?.value) {
       return { isRequired: true };
     } else {
       return null;
