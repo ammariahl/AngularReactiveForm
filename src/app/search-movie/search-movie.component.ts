@@ -19,26 +19,30 @@ export class SearchMovieComponent implements OnInit {
   type!: ['film', 'serie', 'episode'];
   fiche!: ['complete', 'courte'];
   soumission: boolean = false;
+  anneeEnCours = new Date().getFullYear();
 
   constructor(protected fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.searchMovieForm = this.fb.group({
       partieObligatoire: this.fb.group({
-        identifiant: ['id'],
-        titre: ['titre'],
+        identifiant: [''],
+        titre: [''],
       }),
       type: 'serie',
       anneeSortie: [
-        2023,
-        [Validators.required, rangeDateValidator(1890, 2023)],
+        [Validators.required, rangeDateValidator(1900, this.anneeEnCours)],
       ],
-      fiche: 'courte',
+      fiche: '',
     });
 
     this.searchMovieForm
       .get('partieObligatoire')
       ?.setValidators(isRequiredValidator('identifiant', 'titre'));
+
+    this.searchMovieForm.patchValue({
+      fiche: 'courte',
+    });
   }
 
   sendSearchMovieForm(): void {
@@ -60,7 +64,7 @@ export function isRequiredValidator(
   return (control: AbstractControl): ValidationErrors | null => {
     const valueTitre = control.get(control1);
     const valueIdentifiant = control.get(control2);
-    if (!valueTitre?.value || !valueIdentifiant?.value) {
+    if (!valueTitre?.value && !valueIdentifiant?.value) {
       return { isRequired: true };
     } else {
       return null;
